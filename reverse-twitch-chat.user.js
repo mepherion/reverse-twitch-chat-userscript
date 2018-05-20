@@ -30,7 +30,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // @match           https://www.twitch.tv/popout/*/chat*
 // @match           https://www.twitch.tv/*/chat*
 // @match           https://www.twitch.tv/*
-// @version         1.1
+// @version         1.2
 // @copyright       2018, mepherion (https://openuserjs.org/users/mepherion)
 // @license         MIT
 // @updateURL       https://openuserjs.org/meta/mepherion/Reverse_Twitch_Chat.meta.js
@@ -46,24 +46,29 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // ==/OpenUserJS==
 
 function onChatLoad() {
+  // Add style to reverse order of chat
   GM_addStyle('.chat-list .tw-full-height.reverse { display:flex !important; flex-direction:column-reverse !important; }');
   var messageContainer = document.querySelector(MESSAGE_CONTAINER_CLASSES)
   messageContainer.classList.add('reverse');
   
+  // Continually scroll up unless mouse is on the chat
   // The div containing the scrollable area
   var chatContentDiv = messageContainer.parentNode.parentNode;
-  
-  // Continually scroll up, in a way to make the comments readable
-    function scrollUp(now) {
-        if (chatContentDiv.scrollTop > 0) {
+  function scrollUp(now) {
+        if (chatContentDiv.scrollTop > 0 && pauseScroll === false) {
             chatContentDiv.scrollTop = 0;
-        }
+        } 
         window.requestAnimationFrame(scrollUp);
     }
+  
+    chatContentDiv.addEventListener("mouseover", function () { pauseScroll = true;});
+    chatContentDiv.addEventListener("mouseout", function () { pauseScroll = false;});
+  
     window.requestAnimationFrame(scrollUp);
 	chatContentDiv.scrollTop = 0;
 }
 
 var MESSAGE_CONTAINER_CLASSES = '.chat-list .tw-full-height';
+var pauseScroll = false;
 
 waitForKeyElements(MESSAGE_CONTAINER_CLASSES, onChatLoad);
