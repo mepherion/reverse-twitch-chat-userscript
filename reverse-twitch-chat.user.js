@@ -25,6 +25,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // @name            Reverse Twitch Chat
 // @namespace       https://openuserjs.org/users/mepherion
 // @description     Reverses twitch chat so that new messages appear on the top
+// @author          Mepherion
+// @source          https://github.com/mepherion/reverse-twitch-chat-userscript
 // @match           https://www.twitch.tv/popout/*/chat*
 // @match           https://www.twitch.tv/*/chat*
 // @match           https://www.twitch.tv/*
@@ -36,6 +38,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // @require         https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
 // @require         https://gist.github.com/raw/2625891/waitForKeyElements.js
 // @grant GM_addStyle
+// @run-at document-end
 // ==/UserScript==
 
 // ==OpenUserJS==
