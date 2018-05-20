@@ -47,10 +47,23 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 function onChatLoad() {
   GM_addStyle('.chat-list .tw-full-height.reverse { display:flex !important; flex-direction:column-reverse !important; }');
-
-  document.querySelector(MESSAGE_CONTAINER).classList.add('reverse');
+  var messageContainer = document.querySelector(MESSAGE_CONTAINER_CLASSES)
+  messageContainer.classList.add('reverse');
+  
+  // The div containing the scrollable area
+  var chatContentDiv = messageContainer.parentNode.parentNode;
+  
+  // Continually scroll up, in a way to make the comments readable
+    function scrollUp(now) {
+        if (chatContentDiv.scrollTop > 0) {
+            chatContentDiv.scrollTop = 0;
+        }
+        window.requestAnimationFrame(scrollUp);
+    }
+    window.requestAnimationFrame(scrollUp);
+	chatContentDiv.scrollTop = 0;
 }
 
-var MESSAGE_CONTAINER = '.chat-list .tw-full-height';
+var MESSAGE_CONTAINER_CLASSES = '.chat-list .tw-full-height';
 
-waitForKeyElements(MESSAGE_CONTAINER, onChatLoad);
+waitForKeyElements(MESSAGE_CONTAINER_CLASSES, onChatLoad);
