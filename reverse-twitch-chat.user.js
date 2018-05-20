@@ -47,7 +47,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 function onChatLoad() {
   // Add style to reverse order of chat
-  GM_addStyle('.chat-list .tw-full-height.reverse { display:flex !important; flex-direction:column-reverse !important; }');
+  GM_addStyle('.chat-list .tw-full-height.reverse { display:flex !important; flex-direction:column-reverse !important; } .chat-list__more-messages-placeholder { display: none !important; }');
   var messageContainer = document.querySelector(MESSAGE_CONTAINER_CLASSES)
   messageContainer.classList.add('reverse');
   
