@@ -30,7 +30,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // @match           https://www.twitch.tv/popout/*/chat*
 // @match           https://www.twitch.tv/*/chat*
 // @match           https://www.twitch.tv/*
-// @version         1.2
+// @version         1.3
 // @copyright       2018, mepherion (https://openuserjs.org/users/mepherion)
 // @license         MIT
 // @updateURL       https://openuserjs.org/meta/mepherion/Reverse_Twitch_Chat.meta.js
