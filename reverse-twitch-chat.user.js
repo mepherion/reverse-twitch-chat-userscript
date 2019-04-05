@@ -30,7 +30,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // @match           https://www.twitch.tv/popout/*/chat*
 // @match           https://www.twitch.tv/*/chat*
 // @match           https://www.twitch.tv/*
-// @version         1.3
+// @version         1.4
 // @copyright       2018, mepherion (https://openuserjs.org/users/mepherion)
 // @license         MIT
 // @updateURL       https://openuserjs.org/meta/mepherion/Reverse_Twitch_Chat.meta.js
@@ -45,30 +45,48 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // @author mepherion
 // ==/OpenUserJS==
 
-function onChatLoad() {
-  // Add style to reverse order of chat
-  GM_addStyle('.chat-list .tw-full-height.reverse { display:flex !important; flex-direction:column-reverse !important; } .chat-list__more-messages-placeholder { display: none !important; }');
-  var messageContainer = document.querySelector(MESSAGE_CONTAINER_CLASSES)
-  messageContainer.classList.add('reverse');
-  
-  // Continually scroll up unless mouse is on the chat
-  // The div containing the scrollable area
-  var chatContentDiv = messageContainer.parentNode.parentNode;
-  function scrollUp(now) {
+function applyReverseScroll() {
+    // Add style to reverse order of chat
+    GM_addStyle('.chat-list .tw-full-height.reverse { display:flex !important; flex-direction:column-reverse !important; } .chat-list__more-messages-placeholder { display: none !important; }');
+    var messageContainer = document.querySelector(MESSAGE_CONTAINER_CLASSES)
+    messageContainer.classList.add('reverse');
+
+    // Continually scroll up unless mouse is on the chat
+    // The div containing the scrollable area
+    var chatContentDiv = messageContainer.parentNode.parentNode;
+    function scrollUp(now) {
         if (chatContentDiv.scrollTop > 0 && pauseScroll === false) {
             chatContentDiv.scrollTop = 0;
-        } 
+        }
         window.requestAnimationFrame(scrollUp);
     }
-  
-    chatContentDiv.addEventListener("mouseover", function () { pauseScroll = true;});
-    chatContentDiv.addEventListener("mouseout", function () { pauseScroll = false;});
-  
+
+    chatContentDiv.addEventListener("mouseover", function () { pauseScroll = true; });
+    chatContentDiv.addEventListener("mouseout", function () { pauseScroll = false; });
+
     window.requestAnimationFrame(scrollUp);
-	chatContentDiv.scrollTop = 0;
+    chatContentDiv.scrollTop = 0;
+}
+
+function applyBttvReverseScroll() {
+    if (typeof BetterTTV !== "undefined") {
+        BetterTTV.settings.set("reverseChatDirection", true);
+        tries = 1000;
+    } else if (tries < 4) {
+        tries++;
+        setTimeout(applyBttvReverseScroll, 250);
+    } else {
+        applyReverseScroll();
+        
+    }
+}
+
+function onChatLoad() {
+    applyBttvReverseScroll();
 }
 
 var MESSAGE_CONTAINER_CLASSES = '.chat-list .tw-full-height';
 var pauseScroll = false;
+var tries = 0;
 
 waitForKeyElements(MESSAGE_CONTAINER_CLASSES, onChatLoad);
